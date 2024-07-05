@@ -15,6 +15,24 @@ namespace examan
     {
         MySqlConnection cns = new MySqlConnection("server=localhost;uid=root;database=examen");
 
+        public MySqlDataReader Lister()
+        {
+            try
+            {
+                string Query = "SELECT * FROM joueur";
+                MySqlCommand cmd = new MySqlCommand(Query);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cns;
+                cns.Open();
+                MySqlDataReader Rs = cmd.ExecuteReader();
+                return Rs;
+            }
+            catch
+            {
+                MessageBox.Show("Opération non effectuée!", "Lister", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return null;
+            }
+        }
         public bool Authentification(string id, string password)
         {
             try
@@ -42,7 +60,7 @@ namespace examan
         {
             try
             {
-                string Query = "SELECT * FROM selectionnational ORDER BY sunom";
+                string Query = "SELECT * FROM joueur ORDER BY nom";
                 MySqlCommand cmd = new MySqlCommand(Query);
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cns;
@@ -56,11 +74,11 @@ namespace examan
                 return null;
             }
         }
-        public void Ajouter(string surnom, string nombrematchinterieur, string nombrematchexterieur, string nom)
+        public void Ajouter(string Nom, string Position, string Age, string Experiment)
         {
             try
             {
-                string Query = "INSERT INTO selectionnational (nom,surnom,nombrematchinterieur,nombrematchexterieur) VALUES ('" + nom + "','" + surnom + "','" + nombrematchinterieur + "','" + nombrematchexterieur + ")";
+                string Query = "INSERT INTO joueur (nom, position, age, experiment) VALUES ('" + Nom + "','" + Position + "','" + Age + "','" + Experiment + ")";
                 MySqlCommand cmd = new MySqlCommand(Query);
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cns;
@@ -73,11 +91,11 @@ namespace examan
                 MessageBox.Show("Opération non effectuée!", "Ajout", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        public void Modifier(string Login, string Pwd)
+        public void Modifier(string nom, string position, string age, string experiment)
         {
             try
             {
-                string Query = "UPDATE tblclogin SET username='" + Login + "' where password='" + Pwd + "'";
+                string Query = "UPDATE joueur SET nom='" + nom + "' where position='" + position + "'";
                 MySqlCommand cmd = new MySqlCommand(Query);
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cns;
@@ -89,6 +107,23 @@ namespace examan
                 MessageBox.Show("Opération non effectuée!", "Modifier", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+        public void Suppression(string nom)
+        {
+            try
+            {
+                string Query = "DELETE FROM joueur where nom='" + nom + "'";
+                MySqlCommand cmd = new MySqlCommand(Query);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cns;
+                cns.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                MessageBox.Show("Opération non effectuée!", "Suppression", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+      
 
     }
 }
