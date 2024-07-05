@@ -13,14 +13,14 @@ namespace examan
 {
     internal class Class1
     {
-        MySqlConnection cns = new MySqlConnection("server=localhost;uid=root;database=football");
+        MySqlConnection cns = new MySqlConnection("server=localhost;uid=root;database=examen");
 
         public bool Authentification(string id, string password)
         {
             try
             {
                 bool Result = false;
-                string Query = "SELECT * FROM auth WHERE id='" + id + "' AND password='" + password + "'";
+                string Query = "SELECT * FROM tblogin WHERE Login='" + id + "' AND Pwd='" + password + "'";
                 MySqlCommand cmd = new MySqlCommand(Query);
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cns;
@@ -71,6 +71,22 @@ namespace examan
             catch
             {
                 MessageBox.Show("Opération non effectuée!", "Ajout", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        public void Modifier(string Login, string Pwd)
+        {
+            try
+            {
+                string Query = "UPDATE tblclogin SET username='" + Login + "' where password='" + Pwd + "'";
+                MySqlCommand cmd = new MySqlCommand(Query);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cns;
+                cns.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                MessageBox.Show("Opération non effectuée!", "Modifier", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
